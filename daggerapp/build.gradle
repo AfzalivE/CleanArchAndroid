@@ -1,0 +1,55 @@
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.afzaln.cleanarchitecturedagger"
+        minSdkVersion 18
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        encoding "UTF-8"
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+
+    // Dagger 2.0
+    apt 'com.google.dagger:dagger-compiler:2.0'
+    testProvided 'com.google.dagger:dagger-compiler:2.0'
+    //needed to resolve compilation errors, thanks to tutplus.org for finding the dependency
+    // http://stackoverflow.com/questions/27036933/how-to-set-up-dagger-dependency-injection-from-scratch-in-android-project
+    //test compiles
+    androidTestApt 'com.google.dagger:dagger-compiler:2.0'
+    compile 'com.google.dagger:dagger:2.0'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+    androidTestCompile 'com.google.dagger:dagger:2.0'
+
+    // other dependencies
+    compile 'io.reactivex:rxandroid:0.25.0'
+    compile 'com.jakewharton.timber:timber:4.1.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+
+    // test dependencies
+}
