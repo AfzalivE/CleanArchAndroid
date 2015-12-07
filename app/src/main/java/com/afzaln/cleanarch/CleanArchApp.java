@@ -12,7 +12,7 @@ import timber.log.Timber.DebugTree;
 /**
  * Created by afzal on 2015-12-07.
  */
-public class CAApp extends Application {
+public class CleanArchApp extends Application {
 
     private RefWatcher mRefWatcher;
 
@@ -30,7 +30,7 @@ public class CAApp extends Application {
     }
 
     public static RefWatcher getRefWatcher(Context context) {
-        CAApp application = (CAApp) context.getApplicationContext();
+        CleanArchApp application = (CleanArchApp) context.getApplicationContext();
         return application.mRefWatcher;
     }
 }
