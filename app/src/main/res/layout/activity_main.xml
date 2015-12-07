@@ -22,6 +22,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/questions_presenter" />
+    <include
+        android:id="@+id/presenter"
+        layout="@layout/questions_presenter" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -5,5 +5,4 @@ package com.afzaln.cleanarch.adapters;
  */
 public interface RecyclerViewClickListener {
     void onItemHolderClick(int position);
-
 }

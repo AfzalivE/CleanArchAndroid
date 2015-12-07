@@ -11,4 +11,5 @@ public interface QuestionsPresenter {
     void onQuestionsLoaded(ArrayList<Question> questions);
     void onQuestionClicked(Question question);
     void onQuestionsLoadFailed();
+    boolean onBackPressed();
 }
