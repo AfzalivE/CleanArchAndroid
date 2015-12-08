@@ -38,3 +38,7 @@ Not sure really. Will have to revisit after writing the Dagger version.
 Next steps
 -----
 Now that I know which modules and components are needed, I want to write this with Dagger. See how much time and code I can save. It seems the most code is required to manage views and present them.
+
+Other things to consider
+-----
+Perhaps I'll look into this again as well: http://hannesdorfmann.com/android/mosby/
