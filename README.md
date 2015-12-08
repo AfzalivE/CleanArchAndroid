@@ -5,7 +5,7 @@ An example of clean architecture on Android (with and without Dagger)
 Without Dagger
 ----
 At this point, I'm not even sure if this is a good architecture anymore.
-For two views/screens, there are a LOT of classes.
+For two views/screens, there are a LOT of classes. Had we done this the old Android way (foregoing fragments), we'd have two Activity classes, the three networking ones, RecyclerView adapter class, two data classes, and perhaps two more for the custom CheckBox stuff (which doesn't work right now btw), 10 total. Instead, we have 27, hmm but they do work pretty well and all of the functionality looks pretty modular. I'm not an expert though.
 
 One definite problem is that the QuestionsPresenterImpl seems to be the all encapsulating Root. Ideally, there should be something else outside it that should be managing both all Presenters. If that happens then both Presenters would be independent of each other.
 
@@ -23,6 +23,7 @@ Good things
 Bad things
 ----
 - Interactors seem to be very boilerplate-heavy.
+- Rotation is the enemy, because everything is in one Activity, rotation recreates the whole thing and even the position in the backstack is not preserved, let alone the data.
 
 Right now, this app doesn't have much data handling. Just passing live data from the network down to the interactor -> presenter -> view. I wonder how big it would become if there is a data layer, maybe it'll be an abstraction between the network and interactor.
 
