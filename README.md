@@ -6,7 +6,7 @@ Without Dagger
 ----
 
 At this point, I'm not even sure if this is a good architecture anymore.
-For two views/screens, there are a LOT of classes referencing each other all over the place.
+For two views/screens, there are a LOT of classes.
 
 One definite problem is that the QuestionsPresenterImpl seems to be the all encapsulating Root. Ideally, there should be something else outside it that should be managing both all Presenters. If that happens then both Presenters would be independent of each other.
 
@@ -23,8 +23,7 @@ Good things
 
 Bad things
 ----
-- Interactors seem to be crowded right now. Especially the VoteInteractorImpl.
-- Lots of boilerplate.
+- Interactors seem to be very boilerplate-heavy.
 
 Right now, this app doesn't have much data handling. Just passing live data from the network down to the interactor -> presenter -> view. I wonder how big it would become if there is a data layer, maybe it'll be an abstraction between the network and interactor.
 
