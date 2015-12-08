@@ -59,8 +59,8 @@ public class QuestionsPresenterImpl extends LinearLayout implements QuestionsPre
             View.inflate(getContext(), R.layout.vote_presenter, this);
         }
 
-        VotePresenter detailView = (VotePresenter) getChildAt(0);
-        detailView.showQuestionItem(question);
+        VotePresenter votePresenter = (VotePresenter) getChildAt(0);
+        votePresenter.showQuestionItem(question);
     }
 
     public boolean onBackPressed() {
