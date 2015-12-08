@@ -12,6 +12,6 @@
         app:empty_layout="@layout/empty_questions_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/listitem_question" />
+        tools:listitem="@layout/question_item" />
 
 </com.afzaln.cleanarch.views.QuestionsViewImpl>

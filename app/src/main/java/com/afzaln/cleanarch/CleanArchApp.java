@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.afzaln.cleanarch.timber.CrashReportingTree;
+import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import timber.log.Timber;
@@ -22,6 +23,10 @@ public class CleanArchApp extends Application {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
+            Stetho.initialize(Stetho.newInitializerBuilder(this)
+                    .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                    .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                    .build());
         } else {
             Timber.plant(new CrashReportingTree());
         }
