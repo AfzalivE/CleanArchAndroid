@@ -4,7 +4,6 @@ An example of clean architecture on Android (with and without Dagger)
 
 Without Dagger
 ----
-
 At this point, I'm not even sure if this is a good architecture anymore.
 For two views/screens, there are a LOT of classes.
 
