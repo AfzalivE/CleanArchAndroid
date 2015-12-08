@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 import com.afzaln.cleanarch.R;
 import com.afzaln.cleanarch.data.Choice;
 import com.afzaln.cleanarch.data.Question;
+import com.afzaln.cleanarch.interactors.SingleQuestionInteractorImpl;
 import com.afzaln.cleanarch.interactors.VoteInteractorImpl;
 import com.afzaln.cleanarch.views.VoteView;
 
@@ -19,6 +20,7 @@ import com.afzaln.cleanarch.views.VoteView;
 public class VotePresenterImpl extends LinearLayout implements VotePresenter {
 
     private final VoteInteractorImpl mVoteInteractor;
+    private final SingleQuestionInteractorImpl mSingleQuestionInteractor;
 
     @Bind(R.id.votes_layout)
     VoteView mVoteView;
@@ -27,6 +29,7 @@ public class VotePresenterImpl extends LinearLayout implements VotePresenter {
         super(context, attrs);
 
         mVoteInteractor = new VoteInteractorImpl();
+        mSingleQuestionInteractor = new SingleQuestionInteractorImpl();
     }
 
     @Override
@@ -54,7 +57,7 @@ public class VotePresenterImpl extends LinearLayout implements VotePresenter {
 
     @Override
     public void showQuestionItem(Question question) {
-        mVoteInteractor.getQuestion(this, question);
+        mSingleQuestionInteractor.getQuestion(this, question);
     }
 
     @Override

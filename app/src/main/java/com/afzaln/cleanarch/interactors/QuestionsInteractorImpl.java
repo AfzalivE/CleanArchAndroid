@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.afzaln.cleanarch.data.Question;
-import com.afzaln.cleanarch.network.ApiaryApi;
 import com.afzaln.cleanarch.presenters.QuestionsPresenter;
 import retrofit.Callback;
 import retrofit.Response;
@@ -14,9 +13,7 @@ import retrofit.Retrofit;
 /**
  * Created by afzal on 2015-12-07.
  */
-public class QuestionsInteractorImpl implements QuestionsInteractor {
-
-    ApiaryApi mApiaryApi;
+public class QuestionsInteractorImpl extends Interactor implements QuestionsInteractor {
 
     private Callback<List<Question>> mGetQuestionsCallback = new Callback<List<Question>>() {
         @Override
@@ -39,7 +36,6 @@ public class QuestionsInteractorImpl implements QuestionsInteractor {
         getApiaryApi().getQuestions(mGetQuestionsCallback);
     }
 
-    @Override
     public void returnQuestions(List<Question> questions) {
         QuestionsPresenter presenter = getPresenter();
         if (presenter != null) {
@@ -48,7 +44,6 @@ public class QuestionsInteractorImpl implements QuestionsInteractor {
         }
     }
 
-    @Override
     public void returnFailure() {
         QuestionsPresenter presenter = getPresenter();
         if (presenter != null) {
@@ -65,11 +60,4 @@ public class QuestionsInteractorImpl implements QuestionsInteractor {
         return null;
     }
 
-    private ApiaryApi getApiaryApi() {
-        if (mApiaryApi == null) {
-            mApiaryApi = new ApiaryApi();
-        }
-
-        return mApiaryApi;
-    }
 }

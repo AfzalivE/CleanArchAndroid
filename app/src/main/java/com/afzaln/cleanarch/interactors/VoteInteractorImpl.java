@@ -4,7 +4,6 @@ import java.lang.ref.WeakReference;
 
 import com.afzaln.cleanarch.data.Choice;
 import com.afzaln.cleanarch.data.Question;
-import com.afzaln.cleanarch.network.ApiaryApi;
 import com.afzaln.cleanarch.presenters.VotePresenter;
 import retrofit.Callback;
 import retrofit.Response;
@@ -13,8 +12,9 @@ import retrofit.Retrofit;
 /**
  * Created by afzal on 2015-12-07.
  */
-public class VoteInteractorImpl implements VoteInteractor {
-    private ApiaryApi mApiaryApi;
+public class VoteInteractorImpl extends Interactor implements VoteInteractor {
+    WeakReference<VotePresenter> wVotePresenter;
+
     private Callback<Choice> mVoteCallback = new Callback<Choice>() {
         @Override
         public void onResponse(Response<Choice> response, Retrofit retrofit) {
@@ -27,46 +27,6 @@ public class VoteInteractorImpl implements VoteInteractor {
         }
     };
 
-    private Callback<Question> mQuestionCallback = new Callback<Question>() {
-        @Override
-        public void onResponse(Response<Question> response, Retrofit retrofit) {
-            returnQuestion(response.body());
-        }
-
-        @Override
-        public void onFailure(Throwable t) {
-            returnVoteFailure();
-        }
-    };
-
-    WeakReference<VotePresenter> wVotePresenter;
-
-    public void getQuestion(VotePresenter presenter, Question question) {
-        wVotePresenter = new WeakReference<>(presenter);
-        String[] questionUrl = question.url.split("/");
-        int questionId = Integer.parseInt(questionUrl[questionUrl.length - 1]);
-
-        getApiaryApi().getQuestion(questionId, mQuestionCallback);
-    }
-
-    @Override
-    public void returnQuestion(Question question) {
-        VotePresenter presenter = getPresenter();
-        if (presenter != null) {
-            presenter.onReceivedQuestion(question);
-            wVotePresenter.clear();
-        }
-    }
-
-    @Override
-    public void returnQuestionFailure() {
-        VotePresenter presenter = getPresenter();
-        if (presenter != null) {
-            presenter.onQuestionFailure();
-            wVotePresenter.clear();
-        }
-    }
-
     @Override
     public void vote(VotePresenter presenter, Question question, String choiceUrl) {
         wVotePresenter = new WeakReference<>(presenter);
@@ -78,7 +38,6 @@ public class VoteInteractorImpl implements VoteInteractor {
         getApiaryApi().vote(questionId, choiceUrlId, mVoteCallback);
     }
 
-    @Override
     public void returnVoteSuccess(Choice choice) {
         VotePresenter presenter = getPresenter();
         if (presenter != null) {
@@ -87,7 +46,6 @@ public class VoteInteractorImpl implements VoteInteractor {
         }
     }
 
-    @Override
     public void returnVoteFailure() {
         VotePresenter presenter = getPresenter();
         if (presenter != null) {
@@ -102,13 +60,5 @@ public class VoteInteractorImpl implements VoteInteractor {
         }
 
         return null;
-    }
-
-    private ApiaryApi getApiaryApi() {
-        if (mApiaryApi == null) {
-            mApiaryApi = new ApiaryApi();
-        }
-
-        return mApiaryApi;
     }
 }

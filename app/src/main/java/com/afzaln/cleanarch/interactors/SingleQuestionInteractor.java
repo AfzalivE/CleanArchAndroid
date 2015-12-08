@@ -6,6 +6,6 @@ import com.afzaln.cleanarch.presenters.VotePresenter;
 /**
  * Created by afzal on 2015-12-07.
  */
-public interface VoteInteractor {
-    void vote(VotePresenter presenter, Question question, String choiceUrl);
+public interface SingleQuestionInteractor {
+    void getQuestion(VotePresenter presenter, Question question);
 }
