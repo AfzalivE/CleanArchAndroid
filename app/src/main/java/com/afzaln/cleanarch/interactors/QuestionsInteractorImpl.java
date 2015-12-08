@@ -36,7 +36,7 @@ public class QuestionsInteractorImpl implements QuestionsInteractor {
     @Override
     public void loadQuestions(QuestionsPresenter questionsPresenter) {
         wQuestionsPresenter = new WeakReference<>(questionsPresenter);
-        getApiaryApi().getTweets(mGetQuestionsCallback);
+        getApiaryApi().getQuestions(mGetQuestionsCallback);
     }
 
     @Override

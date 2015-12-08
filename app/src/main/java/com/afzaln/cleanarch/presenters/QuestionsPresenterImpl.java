@@ -13,7 +13,6 @@ import butterknife.ButterKnife;
 import com.afzaln.cleanarch.R;
 import com.afzaln.cleanarch.data.Question;
 import com.afzaln.cleanarch.interactors.QuestionsInteractorImpl;
-import com.afzaln.cleanarch.views.QuestionDetailView;
 import com.afzaln.cleanarch.views.QuestionsView;
 import com.afzaln.cleanarch.views.QuestionsViewImpl;
 
@@ -57,11 +56,11 @@ public class QuestionsPresenterImpl extends LinearLayout implements QuestionsPre
         // show the clicked question's QuestionDetailView
         if (isListViewAttached()) {
             removeViewAt(0);
-            View.inflate(getContext(), R.layout.question_detail_layout, this);
+            View.inflate(getContext(), R.layout.vote_presenter, this);
         }
 
-        QuestionDetailView detailView = (QuestionDetailView) getChildAt(0);
-        detailView.setQuestionItem(question);
+        VotePresenter detailView = (VotePresenter) getChildAt(0);
+        detailView.showQuestionItem(question);
     }
 
     public boolean onBackPressed() {
