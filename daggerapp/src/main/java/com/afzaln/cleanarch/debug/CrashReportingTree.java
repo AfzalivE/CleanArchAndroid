@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.timber;
+package com.afzaln.cleanarch.debug;
 
 import android.util.Log;
 
