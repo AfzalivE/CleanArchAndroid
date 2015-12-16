@@ -45,14 +45,14 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
     @Bind(R.id.progress)
     ProgressBar mProgressBar;
 
-    @State Question mQuestion;
-
     @Bind(R.id.choice_group)
     RadioGroup mChoiceGroup;
 
+    @State Question mQuestion;
+
     @State int mSelectedChoiceId = -1;
 
-    private HashMap<Integer, Choice> mChoiceHashMap;
+    HashMap<Integer, Choice> mChoiceHashMap;
 
     PublishSubject<Question> mQuestionSubject = PublishSubject.create();
     PublishSubject<Boolean> mQuestionLoadingSubject = PublishSubject.create();
@@ -126,13 +126,53 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
         });
 
         mQuestionSubject.subscribe(question -> {
-            showQuestion(question);
+            if (question != null) {
+                mQuestion = question;
+                getToolbar().setTitle(question.question);
+
+                mChoiceHashMap.clear();
+                for (Choice choice : question.choices) {
+                    mChoiceHashMap.put(choice.getId(), choice);
+
+                    AppCompatRadioButton radioButton = (AppCompatRadioButton) LayoutInflater.from(getContext()).inflate(R.layout.choice_item_layout, null, false);
+                    radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                        if (isChecked) {
+                            mSelectedChoiceId = choice.getId();
+                        }
+                    });
+                    updateChoice(radioButton, choice);
+
+                    mChoiceGroup.addView(radioButton);
+
+                    TextView textView = new TextView(getContext());
+                    updateChoiceVotes(textView, choice);
+                    mChoiceGroup.addView(textView);
+                }
+            }
         });
 
         mChoiceSubject.subscribe(choice -> {
             if (choice != null) {
                 setSelectedChoice(choice.getId());
-                updateVoteCount(choice);
+                int choiceId = choice.getId();
+                mChoiceHashMap.put(choice.getId(), choice);
+
+                Snackbar.make(getView(), "Vote submitted", Snackbar.LENGTH_SHORT).show();
+
+                for (int i = 0; i < mQuestion.choices.size(); i++) {
+                    if (choice.getId() == mQuestion.choices.get(i).getId()) {
+                        mQuestion.choices.get(i).votes = choice.votes;
+                    }
+                }
+
+                for (int i = 0; i < mChoiceGroup.getChildCount(); i++) {
+                    View child = mChoiceGroup.getChildAt(i);
+                    if ((int) child.getTag() == choiceId) {
+                        if ((child instanceof TextView) && !(child instanceof AppCompatRadioButton)) {
+                            updateChoiceVotes((TextView) child, choice);
+                        }
+                    }
+                }
             }
         });
 
@@ -171,6 +211,11 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
         }
     }
 
+    @Override
+    public void updateVoteCount(Choice choice) {
+        mChoiceSubject.onNext(choice);
+    }
+
     private void updateChoiceVotes(TextView view, Choice choice) {
         view.setText(choice.votes + " votes");
         view.setTag(choice.getId());
@@ -183,28 +228,7 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
 
     @Override
     public void showQuestion(Question question) {
-        if (question != null) {
-            mQuestion = question;
-            getToolbar().setTitle(question.question);
-
-            for (Choice choice : question.choices) {
-                mChoiceHashMap.put(choice.getId(), choice);
-
-                AppCompatRadioButton radioButton = (AppCompatRadioButton) LayoutInflater.from(getContext()).inflate(R.layout.choice_item_layout, null, false);
-                radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if (isChecked) {
-                        mSelectedChoiceId = choice.getId();
-                    }
-                });
-                updateChoice(radioButton, choice);
-
-                mChoiceGroup.addView(radioButton);
-
-                TextView textView = new TextView(getContext());
-                updateChoiceVotes(textView, choice);
-                mChoiceGroup.addView(textView);
-            }
-        }
+        mQuestionSubject.onNext(question);
     }
 
     @Override
@@ -230,22 +254,6 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
     @Override
     public void showVoteError() {
         Snackbar.make(getView(), "Vote submission error", Snackbar.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void updateVoteCount(Choice choice) {
-        int choiceId = choice.getId();
-        mChoiceHashMap.put(choice.getId(), choice);
-
-        Snackbar.make(getView(), "Vote submitted", Snackbar.LENGTH_SHORT).show();
-        for (int i = 0; i < mChoiceGroup.getChildCount(); i++) {
-            View child = mChoiceGroup.getChildAt(i);
-            if ((int) child.getTag() == choiceId) {
-                if ((child instanceof TextView) && !(child instanceof AppCompatRadioButton)) {
-                    updateChoiceVotes((TextView) child, choice);
-                }
-            }
-        }
     }
 
     @Override

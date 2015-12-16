@@ -1,9 +1,11 @@
 package com.afzaln.cleanarch.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by afzal on 2015-12-07.
  */
-public class Choice {
+public class Choice implements Serializable {
     public String choice;
     public String url;
     public int votes;
