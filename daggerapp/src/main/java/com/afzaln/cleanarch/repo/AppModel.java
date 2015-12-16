@@ -2,6 +2,7 @@ package com.afzaln.cleanarch.repo;
 
 import java.util.ArrayList;
 
+import com.afzaln.cleanarch.domain.Choice;
 import com.afzaln.cleanarch.domain.Question;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -20,6 +21,18 @@ public class AppModel {
 
     public Observable<ArrayList<Question>> getQuestions() {
         return mApiaryService.getQuestions()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<Choice> submitVote(int questionId, int choiceId) {
+        return mApiaryService.postQuestionResponse(questionId, choiceId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<Question> getQuestion(int questionId) {
+        return mApiaryService.getQuestion(questionId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

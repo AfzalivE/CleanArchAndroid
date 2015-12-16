@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.afzaln.cleanarch.MainActivity;
 import com.afzaln.cleanarch.R;
 import com.afzaln.cleanarch.adapters.QuestionsAdapter;
 import com.afzaln.cleanarch.adapters.RecyclerViewClickListener;
@@ -25,7 +26,6 @@ import com.afzaln.cleanarch.presenters.QuestionsPresenter;
 import com.afzaln.cleanarch.views.QuestionsView;
 import icepick.Icepick;
 import icepick.State;
-import nz.bradcampbell.compartment.PresenterControllerFragment;
 import rx.subjects.PublishSubject;
 
 import static com.afzaln.cleanarch.CADaggerApp.getRepoComponent;
@@ -33,7 +33,7 @@ import static com.afzaln.cleanarch.CADaggerApp.getRepoComponent;
 /**
  * Created by afzal on 2015-12-13.
  */
-public class QuestionsFragment extends PresenterControllerFragment<QuestionsComponent, QuestionsPresenter> implements QuestionsView {
+public class QuestionsFragment extends BaseFragment<QuestionsComponent, QuestionsPresenter> implements QuestionsView {
     public static final String TAG = QuestionsFragment.class.getSimpleName();
 
     @Inject
@@ -54,8 +54,15 @@ public class QuestionsFragment extends PresenterControllerFragment<QuestionsComp
     private QuestionsAdapter mQuestionsAdapter;
 
     private RecyclerViewClickListener mItemClickListener;
+
     @Bind(R.id.progress)
     ProgressBar mProgressBar;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.content_main, container, false);
+    }
 
     @Override
     protected QuestionsComponent onCreateNonConfigurationComponent() {
@@ -89,16 +96,14 @@ public class QuestionsFragment extends PresenterControllerFragment<QuestionsComp
         Icepick.saveInstanceState(this, outState);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.content_main, container, false);
-    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        getToolbar().setTitle(R.string.app_name);
+        getToolbar().getMenu().clear();
+        toggleToolbarProgress(false);
 
         setupQuestionsListLayout();
 
@@ -150,6 +155,7 @@ public class QuestionsFragment extends PresenterControllerFragment<QuestionsComp
     @Override
     public void onQuestionClicked(int position) {
         // start vote activity/fragment
+        ((MainActivity) getActivity()).showVoteFragment(mQuestionsArrayList.get(position));
     }
 
     @Override

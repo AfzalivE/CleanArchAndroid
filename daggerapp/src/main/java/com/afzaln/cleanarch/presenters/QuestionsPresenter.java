@@ -28,9 +28,9 @@ public class QuestionsPresenter extends BasePresenter<QuestionsView> {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (mSubscription != null) {
+        if (mSubscription != null) {
             mSubscription.unsubscribe();
-//        }
+        }
     }
 
     public void loadQuestions() {
@@ -54,6 +54,7 @@ public class QuestionsPresenter extends BasePresenter<QuestionsView> {
         @Override
         public void onError(Throwable e) {
             if (getView() != null) {
+                getView().hideLoading();
                 getView().showLoadingError();
             }
         }

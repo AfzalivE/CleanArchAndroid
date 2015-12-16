@@ -4,6 +4,9 @@ import javax.inject.Singleton;
 
 import com.afzaln.cleanarch.repo.ApiaryService;
 import com.afzaln.cleanarch.repo.AppModel;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.logging.HttpLoggingInterceptor;
+import com.squareup.okhttp.logging.HttpLoggingInterceptor.Level;
 import dagger.Module;
 import dagger.Provides;
 import retrofit.GsonConverterFactory;
@@ -19,7 +22,18 @@ public class RepoModule {
 
     @Provides
     Retrofit providesRetrofit() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        // set your desired log level
+        logging.setLevel(Level.BODY);
+
+        OkHttpClient httpClient = new OkHttpClient();
+        // add your other interceptors …
+
+        // add logging as last interceptor
+        httpClient.interceptors().add(logging);
+
         return new Retrofit.Builder().baseUrl(BASE_URL)
+                .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();

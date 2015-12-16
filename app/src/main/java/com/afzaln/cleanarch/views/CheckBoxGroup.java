@@ -17,6 +17,7 @@ public class CheckBoxGroup extends LinearLayout {
 
     HashMap<String, ChoiceView> mChoiceMap;
     String mCheckedChoiceId;
+
     private OnChoiceCheckedListener mChoiceCheckedListener = new OnChoiceCheckedListener() {
         @Override
         public void onChoiceChecked(String choiceUrl, boolean checked) {
