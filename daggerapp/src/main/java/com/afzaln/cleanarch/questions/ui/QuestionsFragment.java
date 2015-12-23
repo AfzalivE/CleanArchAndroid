@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.questions;
+package com.afzaln.cleanarch.questions.ui;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -18,13 +18,14 @@ import butterknife.ButterKnife;
 import com.afzaln.cleanarch.MainActivity;
 import com.afzaln.cleanarch.R;
 import com.afzaln.cleanarch.app.BaseFragment;
-import com.afzaln.cleanarch.app.DaggerQuestionsComponent;
 import com.afzaln.cleanarch.models.Question;
+import com.afzaln.cleanarch.questions.QuestionsPresenter;
+import com.afzaln.cleanarch.questions.QuestionsView;
 import icepick.Icepick;
 import icepick.State;
 import rx.subjects.PublishSubject;
 
-import static com.afzaln.cleanarch.CADaggerApp.getRepoComponent;
+import static com.afzaln.cleanarch.CADaggerApp.getDataComponent;
 
 /**
  * Created by afzal on 2015-12-13.
@@ -66,7 +67,7 @@ public class QuestionsFragment extends BaseFragment<QuestionsComponent, Question
         // (i.e. this component instance will survive configuration changes). Can be later
         // retrieved using getComponent()
         return DaggerQuestionsComponent.builder()
-                .repoComponent(getRepoComponent(getActivity()))
+                .dataComponent(getDataComponent(getActivity()))
                 .build();
     }
 

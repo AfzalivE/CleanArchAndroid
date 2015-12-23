@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import com.afzaln.cleanarch.models.Choice;
 import com.afzaln.cleanarch.models.Question;
 import com.afzaln.cleanarch.data.AppModel;
-import com.afzaln.cleanarch.questions.QuestionsScope;
+import com.afzaln.cleanarch.app.QuestionsScope;
 import nz.bradcampbell.compartment.BasePresenter;
 import rx.Observer;
 import rx.Subscription;

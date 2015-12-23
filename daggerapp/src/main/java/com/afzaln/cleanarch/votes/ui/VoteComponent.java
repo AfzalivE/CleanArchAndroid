@@ -1,7 +1,8 @@
-package com.afzaln.cleanarch.votes;
+package com.afzaln.cleanarch.votes.ui;
 
 import com.afzaln.cleanarch.data.DataComponent;
-import com.afzaln.cleanarch.questions.QuestionsScope;
+import com.afzaln.cleanarch.app.QuestionsScope;
+import com.afzaln.cleanarch.votes.VotePresenter;
 import dagger.Component;
 import nz.bradcampbell.compartment.HasPresenter;
 

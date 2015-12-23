@@ -10,8 +10,8 @@ import android.widget.ProgressBar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afzaln.cleanarch.models.Question;
-import com.afzaln.cleanarch.questions.QuestionsFragment;
-import com.afzaln.cleanarch.votes.VoteFragment;
+import com.afzaln.cleanarch.questions.ui.QuestionsFragment;
+import com.afzaln.cleanarch.votes.ui.VoteFragment;
 
 public class MainActivity extends AppCompatActivity {
 

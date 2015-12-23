@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.questions;
+package com.afzaln.cleanarch.questions.ui;
 
 /**
  * Created by afzal on 2015-12-07.

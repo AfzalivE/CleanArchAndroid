@@ -3,11 +3,11 @@ package com.afzaln.cleanarch;
 import android.content.Context;
 
 import com.afzaln.cleanarch.app.AppComponent;
+import com.afzaln.cleanarch.app.AppModule;
 import com.afzaln.cleanarch.app.DaggerAppComponent;
-import com.afzaln.cleanarch.app.DaggerRepoComponent;
+import com.afzaln.cleanarch.data.DaggerDataComponent;
 import com.afzaln.cleanarch.data.DataComponent;
 import com.afzaln.cleanarch.debug.CrashReportingTree;
-import com.afzaln.cleanarch.app.AppModule;
 import com.facebook.stetho.Stetho;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import nz.bradcampbell.compartment.ComponentCacheApplication;
@@ -56,10 +56,10 @@ public class CADaggerApp extends ComponentCacheApplication {
         app.mAppComponent = null;
     }
 
-    public static DataComponent getRepoComponent(Context context) {
+    public static DataComponent getDataComponent(Context context) {
         CADaggerApp app = (CADaggerApp) context.getApplicationContext();
         if (app.mRepoComponent == null) {
-            app.mRepoComponent = DaggerRepoComponent.builder()
+            app.mRepoComponent = DaggerDataComponent.builder()
                     .appComponent(getAppComponent(context))
                     .build();
         }
@@ -67,7 +67,7 @@ public class CADaggerApp extends ComponentCacheApplication {
         return app.mRepoComponent;
     }
 
-    public static void cleanRepoComponent(Context context) {
+    public static void cleanDataComponent(Context context) {
         CADaggerApp app = (CADaggerApp) context.getApplicationContext();
         app.mRepoComponent = null;
     }

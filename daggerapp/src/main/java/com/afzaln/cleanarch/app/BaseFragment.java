@@ -12,7 +12,7 @@ import nz.bradcampbell.compartment.PresenterControllerFragment;
  */
 public abstract class BaseFragment<C extends HasPresenter<P>, P extends Presenter> extends PresenterControllerFragment<C, P> {
 
-    Toolbar getToolbar() {
+    protected Toolbar getToolbar() {
         if (getActivity() != null) {
             return ((MainActivity) getActivity()).mToolbar;
         }
@@ -20,7 +20,7 @@ public abstract class BaseFragment<C extends HasPresenter<P>, P extends Presente
         return null;
     }
 
-    void toggleToolbarProgress(boolean show) {
+    protected void toggleToolbarProgress(boolean show) {
         if (getActivity() != null) {
             ((MainActivity) getActivity()).toggleToolbarProgress(show);
         }

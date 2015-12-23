@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.votes;
+package com.afzaln.cleanarch.votes.ui;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -19,15 +19,16 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afzaln.cleanarch.R;
-import com.afzaln.cleanarch.app.DaggerVoteComponent;
 import com.afzaln.cleanarch.app.BaseFragment;
 import com.afzaln.cleanarch.models.Choice;
 import com.afzaln.cleanarch.models.Question;
+import com.afzaln.cleanarch.votes.VotePresenter;
+import com.afzaln.cleanarch.votes.VoteView;
 import icepick.Icepick;
 import icepick.State;
 import rx.subjects.PublishSubject;
 
-import static com.afzaln.cleanarch.CADaggerApp.getRepoComponent;
+import static com.afzaln.cleanarch.CADaggerApp.getDataComponent;
 
 /**
  * Created by afzal on 2015-12-15.
@@ -80,7 +81,7 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
         // (i.e. this component instance will survive configuration changes). Can be later
         // retrieved using getComponent()
         return DaggerVoteComponent.builder()
-                .repoComponent(getRepoComponent(getActivity()))
+                .dataComponent(getDataComponent(getActivity()))
                 .build();
     }
 

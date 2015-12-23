@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.questions;
+package com.afzaln.cleanarch.questions.ui;
 
 import java.util.ArrayList;
 
@@ -11,8 +11,9 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afzaln.cleanarch.R;
-import com.afzaln.cleanarch.questions.QuestionsAdapter.QuestionHolder;
+import com.afzaln.cleanarch.questions.ui.QuestionsAdapter.QuestionHolder;
 import com.afzaln.cleanarch.models.Question;
+import com.afzaln.cleanarch.questions.QuestionsView;
 
 /**
  * Created by afzal on 2015-12-07.
