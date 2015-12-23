@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.models;
+package com.afzaln.cleanarch.domain;
 
 import java.io.Serializable;
 

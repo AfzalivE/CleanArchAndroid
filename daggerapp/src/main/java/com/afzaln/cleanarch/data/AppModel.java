@@ -2,8 +2,8 @@ package com.afzaln.cleanarch.data;
 
 import java.util.List;
 
-import com.afzaln.cleanarch.models.Choice;
-import com.afzaln.cleanarch.models.Question;
+import com.afzaln.cleanarch.domain.Choice;
+import com.afzaln.cleanarch.domain.Question;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

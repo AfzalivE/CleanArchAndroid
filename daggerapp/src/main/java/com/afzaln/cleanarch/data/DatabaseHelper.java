@@ -2,9 +2,9 @@ package com.afzaln.cleanarch.data;
 
 import java.util.List;
 
-import com.afzaln.cleanarch.models.Choice;
-import com.afzaln.cleanarch.models.Question;
-import com.afzaln.cleanarch.models.Question_Table;
+import com.afzaln.cleanarch.domain.Choice;
+import com.afzaln.cleanarch.domain.Question;
+import com.afzaln.cleanarch.domain.Question_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import rx.Observable;
 

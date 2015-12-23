@@ -7,7 +7,7 @@ import com.afzaln.cleanarch.app.AppModule;
 import com.afzaln.cleanarch.app.DaggerAppComponent;
 import com.afzaln.cleanarch.data.DaggerDataComponent;
 import com.afzaln.cleanarch.data.DataComponent;
-import com.afzaln.cleanarch.debug.CrashReportingTree;
+import com.afzaln.cleanarch.util.CrashReportingTree;
 import com.facebook.stetho.Stetho;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import nz.bradcampbell.compartment.ComponentCacheApplication;

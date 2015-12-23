@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.debug;
+package com.afzaln.cleanarch.util;
 
 import android.util.Log;
 

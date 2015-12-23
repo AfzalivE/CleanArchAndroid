@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import com.afzaln.cleanarch.MainActivity;
 import com.afzaln.cleanarch.R;
 import com.afzaln.cleanarch.app.BaseFragment;
-import com.afzaln.cleanarch.models.Question;
+import com.afzaln.cleanarch.domain.Question;
 import com.afzaln.cleanarch.questions.QuestionsPresenter;
 import com.afzaln.cleanarch.questions.QuestionsView;
 import icepick.Icepick;

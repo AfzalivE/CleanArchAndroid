@@ -2,8 +2,8 @@ package com.afzaln.cleanarch.votes;
 
 import javax.inject.Inject;
 
-import com.afzaln.cleanarch.models.Choice;
-import com.afzaln.cleanarch.models.Question;
+import com.afzaln.cleanarch.domain.Choice;
+import com.afzaln.cleanarch.domain.Question;
 import com.afzaln.cleanarch.data.AppModel;
 import com.afzaln.cleanarch.app.QuestionsScope;
 import nz.bradcampbell.compartment.BasePresenter;
