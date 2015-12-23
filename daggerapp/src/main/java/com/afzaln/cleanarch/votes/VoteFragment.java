@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.fragments;
+package com.afzaln.cleanarch.votes;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -19,12 +19,10 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afzaln.cleanarch.R;
-import com.afzaln.cleanarch.components.DaggerVoteComponent;
-import com.afzaln.cleanarch.components.VoteComponent;
-import com.afzaln.cleanarch.domain.Choice;
-import com.afzaln.cleanarch.domain.Question;
-import com.afzaln.cleanarch.presenters.VotePresenter;
-import com.afzaln.cleanarch.views.VoteView;
+import com.afzaln.cleanarch.app.DaggerVoteComponent;
+import com.afzaln.cleanarch.app.BaseFragment;
+import com.afzaln.cleanarch.models.Choice;
+import com.afzaln.cleanarch.models.Question;
 import icepick.Icepick;
 import icepick.State;
 import rx.subjects.PublishSubject;
@@ -132,12 +130,12 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
 
                 mChoiceHashMap.clear();
                 for (Choice choice : question.choices) {
-                    mChoiceHashMap.put(choice.getId(), choice);
+                    mChoiceHashMap.put(choice.id, choice);
 
                     AppCompatRadioButton radioButton = (AppCompatRadioButton) LayoutInflater.from(getContext()).inflate(R.layout.choice_item_layout, null, false);
                     radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
                         if (isChecked) {
-                            mSelectedChoiceId = choice.getId();
+                            mSelectedChoiceId = choice.id;
                         }
                     });
                     updateChoice(radioButton, choice);
@@ -153,14 +151,14 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
 
         mChoiceSubject.subscribe(choice -> {
             if (choice != null) {
-                setSelectedChoice(choice.getId());
-                int choiceId = choice.getId();
-                mChoiceHashMap.put(choice.getId(), choice);
+                setSelectedChoice(choice.id);
+                int choiceId = choice.id;
+                mChoiceHashMap.put(choice.id, choice);
 
                 Snackbar.make(getView(), "Vote submitted", Snackbar.LENGTH_SHORT).show();
 
                 for (int i = 0; i < mQuestion.choices.size(); i++) {
-                    if (choice.getId() == mQuestion.choices.get(i).getId()) {
+                    if (choice.id == mQuestion.choices.get(i).id) {
                         mQuestion.choices.get(i).votes = choice.votes;
                     }
                 }
@@ -218,12 +216,12 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
 
     private void updateChoiceVotes(TextView view, Choice choice) {
         view.setText(choice.votes + " votes");
-        view.setTag(choice.getId());
+        view.setTag(choice.id);
     }
 
     private void updateChoice(AppCompatRadioButton radioButton, Choice choice) {
         radioButton.setText(choice.choice);
-        radioButton.setTag(choice.getId());
+        radioButton.setTag(choice.id);
     }
 
     @Override
@@ -265,7 +263,7 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
         VoteFragment fragment = new VoteFragment();
 
         Bundle questionBundle = new Bundle();
-        questionBundle.putInt(VoteFragment.QUESTION_ID, question.getId());
+        questionBundle.putInt(VoteFragment.QUESTION_ID, question.id);
 
         fragment.setArguments(questionBundle);
 

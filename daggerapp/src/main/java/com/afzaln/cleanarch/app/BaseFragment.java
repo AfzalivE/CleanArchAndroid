@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.fragments;
+package com.afzaln.cleanarch.app;
 
 import android.support.v7.widget.Toolbar;
 

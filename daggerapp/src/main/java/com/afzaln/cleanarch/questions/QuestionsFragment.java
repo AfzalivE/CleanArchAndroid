@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.fragments;
+package com.afzaln.cleanarch.questions;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -17,13 +17,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.afzaln.cleanarch.MainActivity;
 import com.afzaln.cleanarch.R;
-import com.afzaln.cleanarch.adapters.QuestionsAdapter;
-import com.afzaln.cleanarch.adapters.RecyclerViewClickListener;
-import com.afzaln.cleanarch.components.DaggerQuestionsComponent;
-import com.afzaln.cleanarch.components.QuestionsComponent;
-import com.afzaln.cleanarch.domain.Question;
-import com.afzaln.cleanarch.presenters.QuestionsPresenter;
-import com.afzaln.cleanarch.views.QuestionsView;
+import com.afzaln.cleanarch.app.BaseFragment;
+import com.afzaln.cleanarch.app.DaggerQuestionsComponent;
+import com.afzaln.cleanarch.models.Question;
 import icepick.Icepick;
 import icepick.State;
 import rx.subjects.PublishSubject;

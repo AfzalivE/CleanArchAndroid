@@ -1,15 +1,13 @@
-package com.afzaln.cleanarch.modules;
+package com.afzaln.cleanarch.data;
 
 import javax.inject.Singleton;
 
-import com.afzaln.cleanarch.repo.ApiaryService;
-import com.afzaln.cleanarch.repo.AppModel;
+import com.github.aurae.retrofit.LoganSquareConverterFactory;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor.Level;
 import dagger.Module;
 import dagger.Provides;
-import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 
@@ -17,7 +15,7 @@ import retrofit.RxJavaCallAdapterFactory;
  * Created by afzal on 2015-12-13.
  */
 @Module
-public class RepoModule {
+public class DataModule {
     public static final String BASE_URL = "http://polls.apiblueprint.org/";
 
     @Provides
@@ -34,7 +32,7 @@ public class RepoModule {
 
         return new Retrofit.Builder().baseUrl(BASE_URL)
                 .client(httpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(LoganSquareConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }
@@ -46,7 +44,13 @@ public class RepoModule {
 
     @Provides
     @Singleton
-    AppModel provideAppModel(ApiaryService apiaryService) {
-        return new AppModel(apiaryService);
+    DatabaseHelper provideDatabaseHelper() {
+        return new DatabaseHelper();
+    }
+
+    @Provides
+    @Singleton
+    AppModel provideAppModel(ApiaryService apiaryService, DatabaseHelper databaseHelper) {
+        return new AppModel(apiaryService, databaseHelper);
     }
 }

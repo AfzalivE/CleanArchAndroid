@@ -1,8 +1,9 @@
-package com.afzaln.cleanarch.components;
+package com.afzaln.cleanarch.app;
+
+import android.content.Context;
 
 import com.afzaln.cleanarch.CADaggerApp;
 import com.afzaln.cleanarch.MainActivity;
-import com.afzaln.cleanarch.modules.AppModule;
 import dagger.Component;
 
 /**
@@ -13,5 +14,6 @@ import dagger.Component;
 )
 public interface AppComponent {
     MainActivity inject(MainActivity activity);
+    Context getAppContext();
     CADaggerApp getApp();
 }

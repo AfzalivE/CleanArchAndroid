@@ -1,8 +1,6 @@
-package com.afzaln.cleanarch.components;
+package com.afzaln.cleanarch.questions;
 
-import com.afzaln.cleanarch.fragments.QuestionsFragment;
-import com.afzaln.cleanarch.presenters.QuestionsPresenter;
-import com.afzaln.cleanarch.scopes.QuestionsScope;
+import com.afzaln.cleanarch.data.DataComponent;
 import dagger.Component;
 import nz.bradcampbell.compartment.HasPresenter;
 
@@ -11,7 +9,7 @@ import nz.bradcampbell.compartment.HasPresenter;
  */
 @QuestionsScope
 @Component(
-        dependencies = {RepoComponent.class}
+        dependencies = {DataComponent.class}
 )
 public interface QuestionsComponent extends HasPresenter<QuestionsPresenter> {
     void inject(QuestionsFragment fragment);

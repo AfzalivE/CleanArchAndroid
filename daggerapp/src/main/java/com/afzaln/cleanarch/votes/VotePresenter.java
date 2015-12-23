@@ -1,12 +1,11 @@
-package com.afzaln.cleanarch.presenters;
+package com.afzaln.cleanarch.votes;
 
 import javax.inject.Inject;
 
-import com.afzaln.cleanarch.domain.Choice;
-import com.afzaln.cleanarch.domain.Question;
-import com.afzaln.cleanarch.repo.AppModel;
-import com.afzaln.cleanarch.scopes.QuestionsScope;
-import com.afzaln.cleanarch.views.VoteView;
+import com.afzaln.cleanarch.models.Choice;
+import com.afzaln.cleanarch.models.Question;
+import com.afzaln.cleanarch.data.AppModel;
+import com.afzaln.cleanarch.questions.QuestionsScope;
 import nz.bradcampbell.compartment.BasePresenter;
 import rx.Observer;
 import rx.Subscription;
@@ -55,7 +54,7 @@ public class VotePresenter extends BasePresenter<VoteView> {
 
         getView().showVoteLoading();
 
-        mVoteSubscription = mAppModel.submitVote(question.getId(), choice.getId())
+        mVoteSubscription = mAppModel.submitVote(question.id, choice.id)
                 .subscribe(mVoteObserver);
     }
 

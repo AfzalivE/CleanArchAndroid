@@ -1,15 +1,15 @@
-package com.afzaln.cleanarch.presenters;
+package com.afzaln.cleanarch.questions;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.afzaln.cleanarch.domain.Question;
-import com.afzaln.cleanarch.repo.AppModel;
-import com.afzaln.cleanarch.scopes.QuestionsScope;
-import com.afzaln.cleanarch.views.QuestionsView;
+import com.afzaln.cleanarch.models.Question;
+import com.afzaln.cleanarch.data.AppModel;
 import nz.bradcampbell.compartment.BasePresenter;
 import rx.Observer;
 import rx.Subscription;
+import timber.log.Timber;
 
 /**
  * Created by afzal on 2015-12-13.
@@ -43,7 +43,7 @@ public class QuestionsPresenter extends BasePresenter<QuestionsView> {
                 .subscribe(mObserver);
     }
 
-    private Observer<? super ArrayList<Question>> mObserver = new Observer<ArrayList<Question>>() {
+    private Observer<? super List<Question>> mObserver = new Observer<List<Question>>() {
         @Override
         public void onCompleted() {
             if (getView() != null) {
@@ -53,6 +53,7 @@ public class QuestionsPresenter extends BasePresenter<QuestionsView> {
 
         @Override
         public void onError(Throwable e) {
+            Timber.e(e, "Error fetching questions");
             if (getView() != null) {
                 getView().hideLoading();
                 getView().showLoadingError();
@@ -60,9 +61,9 @@ public class QuestionsPresenter extends BasePresenter<QuestionsView> {
         }
 
         @Override
-        public void onNext(ArrayList<Question> questions) {
+        public void onNext(List<Question> questions) {
             if (getView() != null) {
-                getView().showQuestions(questions);
+                getView().showQuestions((ArrayList<Question>) questions);
             }
         }
     };

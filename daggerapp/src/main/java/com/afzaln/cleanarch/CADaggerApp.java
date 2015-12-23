@@ -2,12 +2,14 @@ package com.afzaln.cleanarch;
 
 import android.content.Context;
 
-import com.afzaln.cleanarch.components.AppComponent;
-import com.afzaln.cleanarch.components.DaggerAppComponent;
-import com.afzaln.cleanarch.components.DaggerRepoComponent;
-import com.afzaln.cleanarch.components.RepoComponent;
+import com.afzaln.cleanarch.app.AppComponent;
+import com.afzaln.cleanarch.app.DaggerAppComponent;
+import com.afzaln.cleanarch.app.DaggerRepoComponent;
+import com.afzaln.cleanarch.data.DataComponent;
 import com.afzaln.cleanarch.debug.CrashReportingTree;
-import com.afzaln.cleanarch.modules.AppModule;
+import com.afzaln.cleanarch.app.AppModule;
+import com.facebook.stetho.Stetho;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import nz.bradcampbell.compartment.ComponentCacheApplication;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -17,7 +19,7 @@ import timber.log.Timber.DebugTree;
  */
 public class CADaggerApp extends ComponentCacheApplication {
     private AppComponent mAppComponent;
-    private RepoComponent mRepoComponent;
+    private DataComponent mRepoComponent;
 
     @Override
     public void onCreate() {
@@ -25,9 +27,13 @@ public class CADaggerApp extends ComponentCacheApplication {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
+//            OkHttpClient client = new OkHttpClient();
+//            client.networkInterceptors().add(new StethoInterceptor());
+            Stetho.initializeWithDefaults(this);
         } else {
             Timber.plant(new CrashReportingTree());
         }
+        FlowManager.init(this);
     }
 
     protected AppModule getAppModule() {
@@ -50,7 +56,7 @@ public class CADaggerApp extends ComponentCacheApplication {
         app.mAppComponent = null;
     }
 
-    public static RepoComponent getRepoComponent(Context context) {
+    public static DataComponent getRepoComponent(Context context) {
         CADaggerApp app = (CADaggerApp) context.getApplicationContext();
         if (app.mRepoComponent == null) {
             app.mRepoComponent = DaggerRepoComponent.builder()

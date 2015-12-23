@@ -1,9 +1,9 @@
-package com.afzaln.cleanarch.repo;
+package com.afzaln.cleanarch.data;
 
 import java.util.ArrayList;
 
-import com.afzaln.cleanarch.domain.Choice;
-import com.afzaln.cleanarch.domain.Question;
+import com.afzaln.cleanarch.models.Choice;
+import com.afzaln.cleanarch.models.Question;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;

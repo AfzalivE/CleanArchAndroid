@@ -1,8 +1,7 @@
-package com.afzaln.cleanarch.components;
+package com.afzaln.cleanarch.votes;
 
-import com.afzaln.cleanarch.fragments.VoteFragment;
-import com.afzaln.cleanarch.presenters.VotePresenter;
-import com.afzaln.cleanarch.scopes.QuestionsScope;
+import com.afzaln.cleanarch.data.DataComponent;
+import com.afzaln.cleanarch.questions.QuestionsScope;
 import dagger.Component;
 import nz.bradcampbell.compartment.HasPresenter;
 
@@ -11,7 +10,7 @@ import nz.bradcampbell.compartment.HasPresenter;
  */
 @QuestionsScope
 @Component(
-        dependencies = {RepoComponent.class}
+        dependencies = {DataComponent.class}
 )
 public interface VoteComponent extends HasPresenter<VotePresenter> {
     void inject(VoteFragment fragment);

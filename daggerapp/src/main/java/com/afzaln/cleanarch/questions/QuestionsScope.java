@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.scopes;
+package com.afzaln.cleanarch.questions;
 
 import javax.inject.Scope;
 import java.lang.annotation.Retention;

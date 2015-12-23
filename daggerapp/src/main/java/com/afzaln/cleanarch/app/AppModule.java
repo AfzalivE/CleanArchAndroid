@@ -1,4 +1,4 @@
-package com.afzaln.cleanarch.modules;
+package com.afzaln.cleanarch.app;
 
 import android.content.Context;
 
