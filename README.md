@@ -1,44 +1,49 @@
 # CleanArchAndroid
 An example of clean architecture on Android (with and without Dagger)
 
-
-Without Dagger
+With Dagger (see history of this file to see an old evaluation of an architecture without Dagger)
 ----
-At this point, I'm not even sure if this is a good architecture anymore.
-For two views/screens, there are a LOT of classes. Had we done this the old Android way (foregoing fragments), we'd have two Activity classes, the three networking ones, RecyclerView adapter class, two data classes, and perhaps two more for the custom CheckBox stuff (which doesn't work right now btw), 10 total. Instead, we have 27, hmm but they do work pretty well and all of the functionality looks pretty modular. I'm not an expert though.
+Seems pretty good if I do say so myself. Largely based on https://github.com/grandstaish/hello-mvp-dagger-2/
 
-One definite problem is that the QuestionsPresenterImpl seems to be the all encapsulating Root. Ideally, there should be something else outside it that should be managing both all Presenters. If that happens then both Presenters would be independent of each other.
+Opted to use the Compartment library to bind "view" (which is not the Android View) to the Presenter, instead of Mosby. Mainly because Compartment seemed more lightweight and straight-forward.
 
-I have to do this weird dance to get the checked choice back to the VotePresenterImpl, not sure how to avoid that, even with the CheckBoxGroup class.
+Also using Icepick to save basic view state information for configuration changes.
+
+Model
+----
+Model is a Singleton in this app, can use any mix of data APIs. Right now, it goes wherever the data is found (local database, then network). 
+
+There are a few of ways to hit the network to keep the data up-to-date:
+- A basic time-since-refresh variable that triggers 
+- Compare timestamp since last data update with the network
+
+Not a point of worry anymore. DBFlow seems to be okay for local database as well.
+
+View
+----
+Using the custom "View" interface, it becomes very easy to create a presenter and specifying the requirements of the view that will be controlled with it. Still have to investigate how to manage/cleanup the PublishSubjects, especially in VoteFragment. State information is retained using the Icepick library.
+
+Presenter
+----
+Simple job, load the data from the model and let the view know about the data. Also, thanks to Compartment, it persists through configuration changes.
 
 
 Good things
----
-- Interactors only hold weak references to the Presenters, and those references are cleared after they're used for that "event".
-- Presenters only hold reference to their own child views and only interact with those views, not anything inside them.
-- Views interact directly with their own children, the "actual" views.
-- Network layer looks like its completely separate from everything, but that's the case when using Retrofit anyway.
-- Activity is basically just chilling since everything is being done in the child views, which are presenters.
+----
+- Dagger allows for a lot of perspective in regards to the lifecycle of components. Like AppModel (data layer) should be a singleton, which also deals with the network and database layers by itself. Can be tested easily under different network/database scenarios.
+
+- Presenters don't need to worry about anything, data layer is provided using Dagger and the View layer is called in an observable for updates. Can be tested easily by mocking the data layer and making sure the correct View methods are called in different scenarios.
+
+- Views don't have to worry about app logic or data layer. Can probably be easily tested by just calling the PublishSubjects under different scenarios and seeing if the behavior is correct.
+
+- Rotation and other configuration changes are super easy to manage, especially with Icepick to retain information about the state of the view to apply later with the PublishSubjects and reloading the data using the Presenter. Perhaps a ViewState object could be declared if the retained information is complex enough. Right now, data is loaded from the Presenter (which could fetch it from memory or db) and then view state changes are applied.
 
 Bad things
 ----
-- Interactors seem to be very boilerplate-heavy.
-- Rotation is the enemy, because everything is in one Activity, rotation recreates the whole thing and even the position in the backstack is not preserved, let alone the data.
-
-Right now, this app doesn't have much data handling. Just passing live data from the network down to the interactor -> presenter -> view. I wonder how big it would become if there is a data layer, maybe it'll be an abstraction between the network and interactor.
-
-I really don't like how the interactor seems to have all the callback stuff related to Retrofit in it, maybe there's a better way to do that.
-
-
-Testability
------
-Not sure really. Will have to revisit after writing the Dagger version.
-
+- View layers are code-heavy, and they're gonna get heavier as animations are introduced to the fold.
 
 Next steps
 -----
-Now that I know which modules and components are needed, I want to write this with Dagger. See how much time and code I can save. It seems the most code is required to manage views and present them.
-
-Other things to consider
------
-Perhaps I'll look into this again as well: http://hannesdorfmann.com/android/mosby/
+- Write tests and see how testable this is
+- See if an animation layer can be abstracted away from the View
+- See how to clean up the View layer.
