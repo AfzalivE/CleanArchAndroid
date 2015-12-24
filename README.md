@@ -47,3 +47,4 @@ Next steps
 - Write tests and see how testable this is
 - See if an animation layer can be abstracted away from the View
 - See how to clean up the View layer.
+- See how to observe changes in Network layer from AppModel and save them locally. Right now, the Network layer is responsible for calling the Database layer, which shouldn't be the case.

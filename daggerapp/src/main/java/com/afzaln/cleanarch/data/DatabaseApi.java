@@ -12,7 +12,7 @@ import rx.Observable;
 /**
  * Created by afzal on 2015-12-22.
  */
-public class DatabaseHelper {
+public class DatabaseApi {
 
     public Observable<List<Question>> getQuestions() {
         List<Question> questions = SQLite.select()

@@ -44,13 +44,19 @@ public class DataModule {
 
     @Provides
     @Singleton
-    DatabaseHelper provideDatabaseHelper() {
-        return new DatabaseHelper();
+    DatabaseApi provideDatabaseApi() {
+        return new DatabaseApi();
     }
 
     @Provides
     @Singleton
-    AppModel provideAppModel(ApiaryService apiaryService, DatabaseHelper databaseHelper) {
-        return new AppModel(apiaryService, databaseHelper);
+    NetworkApi provideNetworkApi(ApiaryService apiaryService, DatabaseApi databaseApi) {
+        return new NetworkApi(apiaryService, databaseApi);
+    }
+
+    @Provides
+    @Singleton
+    AppModel provideAppModel(NetworkApi networkApi, DatabaseApi databaseHelper) {
+        return new AppModel(networkApi, databaseHelper);
     }
 }
