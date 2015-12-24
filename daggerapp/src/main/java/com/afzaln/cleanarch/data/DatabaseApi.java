@@ -58,4 +58,9 @@ public class DatabaseApi {
         choice.votes = newChoice.votes;
         choice.update();
     }
+
+    public void clear() {
+        SQLite.delete().from(Question.class).query();
+        SQLite.delete().from(Choice.class).query();
+    }
 }

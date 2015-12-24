@@ -21,6 +21,7 @@ public class AppModel {
 
     public Observable<List<Question>> getQuestions(boolean forceNetworkRefresh) {
         if (forceNetworkRefresh) {
+            mDatabaseApi.clear();
             return mNetworkApi.getQuestions();
         } else {
             return Observable.concat(mDatabaseApi.getQuestions(), mNetworkApi.getQuestions())
