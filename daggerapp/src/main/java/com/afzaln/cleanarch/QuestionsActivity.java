@@ -2,35 +2,25 @@ package com.afzaln.cleanarch;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ProgressBar;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import com.afzaln.cleanarch.domain.Question;
+import com.afzaln.cleanarch.app.BaseActivity;
 import com.afzaln.cleanarch.questions.ui.QuestionsFragment;
 import com.afzaln.cleanarch.votes.ui.VoteFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class QuestionsActivity extends BaseActivity {
 
-    private static final String FLAG_COMMIT_FRAGMENT = "commitFragment";
-
-    @Bind(R.id.toolbar)
-    public Toolbar mToolbar;
-
-    @Bind(R.id.toolbar_progress_bar)
-    public ProgressBar mToolbarProgressBar;
+    /**
+     * Specify layout for BaseActivity to load
+     * and Bind Butterknife with
+     */
+    public QuestionsActivity() {
+        super(R.layout.activity_main);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         CADaggerApp.getAppComponent(this).inject(this);
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         boolean commitFragment = intent.getBooleanExtra(FLAG_COMMIT_FRAGMENT, true);
@@ -44,15 +34,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void showVoteFragment(Question question) {
+    public void showVoteFragment(int questionId) {
+//        startActivity(new Intent(this, VoteActivity.class).putExtra("questionId", questionId));
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.root, VoteFragment.newInstance(question), VoteFragment.TAG)
+                .replace(R.id.root, VoteFragment.newInstance(questionId), VoteFragment.TAG)
                 .addToBackStack(VoteFragment.TAG)
                 .commit();
-    }
-
-    public void toggleToolbarProgress(boolean show) {
-        mToolbarProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

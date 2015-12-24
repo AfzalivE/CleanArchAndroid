@@ -35,12 +35,16 @@ public class QuestionsPresenter extends BasePresenter<QuestionsView> {
     }
 
     public void loadQuestions() {
+        loadQuestions(false);
+    }
+
+    public void loadQuestions(boolean forceNetworkRefresh) {
         // already subscribed, changes will be called in the Observer
         if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             return;
         }
         getView().showLoading();
-        mSubscription = mAppModel.getQuestions()
+        mSubscription = mAppModel.getQuestions(forceNetworkRefresh)
                 .subscribe(mObserver);
     }
 

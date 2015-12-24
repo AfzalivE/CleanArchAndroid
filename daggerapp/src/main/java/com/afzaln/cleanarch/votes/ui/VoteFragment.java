@@ -3,12 +3,18 @@ package com.afzaln.cleanarch.votes.ui;
 import javax.inject.Inject;
 import java.util.HashMap;
 
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.TransitionSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +53,7 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
     @Bind(R.id.choice_group)
     RadioGroup mChoiceGroup;
 
-    @State Question mQuestion;
+    Question mQuestion;
 
     @State int mSelectedChoiceId = -1;
 
@@ -56,7 +62,7 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
     PublishSubject<Question> mQuestionSubject = PublishSubject.create();
     PublishSubject<Boolean> mQuestionLoadingSubject = PublishSubject.create();
     PublishSubject<Boolean> mVoteLoadingSubject = PublishSubject.create();
-    PublishSubject<Choice> mChoiceSubject = PublishSubject.create();
+    PublishSubject<Choice> mVoteSubmittedSubject = PublishSubject.create();
 
     private Boolean mIsLoading = false;
     private Boolean mIsVoteLoading = false;
@@ -147,22 +153,17 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
                     updateChoiceVotes(textView, choice);
                     mChoiceGroup.addView(textView);
                 }
+
+                setSelectedChoice(mSelectedChoiceId);
             }
         });
 
-        mChoiceSubject.subscribe(choice -> {
+        mVoteSubmittedSubject.subscribe(choice -> {
             if (choice != null) {
-                setSelectedChoice(choice.id);
                 int choiceId = choice.id;
                 mChoiceHashMap.put(choice.id, choice);
 
                 Snackbar.make(getView(), "Vote submitted", Snackbar.LENGTH_SHORT).show();
-
-                for (int i = 0; i < mQuestion.choices.size(); i++) {
-                    if (choice.id == mQuestion.choices.get(i).id) {
-                        mQuestion.choices.get(i).votes = choice.votes;
-                    }
-                }
 
                 for (int i = 0; i < mChoiceGroup.getChildCount(); i++) {
                     View child = mChoiceGroup.getChildAt(i);
@@ -187,24 +188,21 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
 
         mQuestionLoadingSubject.onNext(mIsLoading);
         mQuestionSubject.onNext(mQuestion);
-        mChoiceSubject.onNext(mChoiceHashMap.size() > 0 ? mChoiceHashMap.get(mSelectedChoiceId) : null);
+        mVoteSubmittedSubject.onNext(mChoiceHashMap.size() > 0 ? mChoiceHashMap.get(mSelectedChoiceId) : null);
         mVoteLoadingSubject.onNext(mIsVoteLoading);
 
-        if (savedInstanceState == null) {
-            mPresenter.loadQuestion(questionId);
-        }
+//        if (savedInstanceState == null) {
+        mPresenter.loadQuestion(questionId);
+//        }
     }
 
     private void setSelectedChoice(int choiceId) {
         mSelectedChoiceId = choiceId;
-        if (choiceId != -1) {
-
-            for (int i = 0; i < mChoiceGroup.getChildCount(); i++) {
-                View child = mChoiceGroup.getChildAt(i);
-                if ((int) child.getTag() == choiceId) {
-                    if (child instanceof AppCompatRadioButton) {
-                        ((AppCompatRadioButton) child).setChecked(true);
-                    }
+        for (int i = 0; i < mChoiceGroup.getChildCount(); i++) {
+            View child = mChoiceGroup.getChildAt(i);
+            if ((int) child.getTag() == choiceId) {
+                if (child instanceof AppCompatRadioButton) {
+                    ((AppCompatRadioButton) child).setChecked(true);
                 }
             }
         }
@@ -212,7 +210,7 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
 
     @Override
     public void updateVoteCount(Choice choice) {
-        mChoiceSubject.onNext(choice);
+        mVoteSubmittedSubject.onNext(choice);
     }
 
     private void updateChoiceVotes(TextView view, Choice choice) {
@@ -260,11 +258,26 @@ public class VoteFragment extends BaseFragment<VoteComponent, VotePresenter> imp
         Snackbar.make(getView(), "Couldn't fetch question", Snackbar.LENGTH_SHORT).show();
     }
 
-    public static Fragment newInstance(Question question) {
+    public static Fragment newInstance(int questionId) {
         VoteFragment fragment = new VoteFragment();
+        fragment.setAllowEnterTransitionOverlap(true);
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            TransitionSet enterSet = new TransitionSet();
+            enterSet.addTransition(new Slide(Gravity.BOTTOM));
+            enterSet.addTransition(new Fade(Fade.IN));
+            fragment.setEnterTransition(enterSet);
+
+            TransitionSet exitSet = new TransitionSet();
+//            enterSet.addTransition(new Slide(Gravity.RIGHT));
+            enterSet.addTransition(new Fade(Fade.OUT));
+            fragment.setExitTransition(exitSet);
+
+            fragment.setReturnTransition(exitSet);
+
+        }
 
         Bundle questionBundle = new Bundle();
-        questionBundle.putInt(VoteFragment.QUESTION_ID, question.id);
+        questionBundle.putInt(VoteFragment.QUESTION_ID, questionId);
 
         fragment.setArguments(questionBundle);
 

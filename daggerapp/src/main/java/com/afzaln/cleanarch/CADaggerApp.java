@@ -51,11 +51,6 @@ public class CADaggerApp extends ComponentCacheApplication {
         return app.mAppComponent;
     }
 
-    public static void cleanAppComponent(Context context) {
-        CADaggerApp app = (CADaggerApp) context.getApplicationContext();
-        app.mAppComponent = null;
-    }
-
     public static DataComponent getDataComponent(Context context) {
         CADaggerApp app = (CADaggerApp) context.getApplicationContext();
         if (app.mRepoComponent == null) {
@@ -65,6 +60,11 @@ public class CADaggerApp extends ComponentCacheApplication {
         }
 
         return app.mRepoComponent;
+    }
+
+    public static void cleanAppComponent(Context context) {
+        CADaggerApp app = (CADaggerApp) context.getApplicationContext();
+        app.mAppComponent = null;
     }
 
     public static void cleanDataComponent(Context context) {

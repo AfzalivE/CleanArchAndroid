@@ -1,9 +1,7 @@
 package com.afzaln.cleanarch.app;
 
-import android.content.Context;
-
 import com.afzaln.cleanarch.CADaggerApp;
-import com.afzaln.cleanarch.MainActivity;
+import com.afzaln.cleanarch.QuestionsActivity;
 import dagger.Component;
 
 /**
@@ -13,7 +11,6 @@ import dagger.Component;
         modules = {AppModule.class}
 )
 public interface AppComponent {
-    MainActivity inject(MainActivity activity);
-    Context getAppContext();
+    QuestionsActivity inject(QuestionsActivity activity);
     CADaggerApp getApp();
 }

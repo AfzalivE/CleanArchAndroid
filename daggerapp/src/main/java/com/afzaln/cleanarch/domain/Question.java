@@ -43,6 +43,7 @@ public class Question extends BaseModel implements Serializable {
             choices = (ArrayList<Choice>) SQLite.select()
                     .from(Choice.class)
                     .where(Choice_Table.mQuestionForeignKeyContainer_id.eq(id))
+                    .orderBy(Choice_Table.votes, false)
                     .queryList();
         }
 

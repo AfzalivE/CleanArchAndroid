@@ -3,19 +3,25 @@ package com.afzaln.cleanarch.questions.ui;
 import javax.inject.Inject;
 import java.util.ArrayList;
 
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.TransitionSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.afzaln.cleanarch.MainActivity;
+import com.afzaln.cleanarch.QuestionsActivity;
 import com.afzaln.cleanarch.R;
 import com.afzaln.cleanarch.app.BaseFragment;
 import com.afzaln.cleanarch.domain.Question;
@@ -39,21 +45,18 @@ public class QuestionsFragment extends BaseFragment<QuestionsComponent, Question
     @Bind(R.id.questions_list)
     RecyclerView mQuestionsList;
 
+    @Bind(R.id.refresh_layout)
+    SwipeRefreshLayout mRefreshLayout;
+
     PublishSubject<ArrayList<Question>> mDataSubject = PublishSubject.create();
     PublishSubject<Boolean> mLoadingSubject = PublishSubject.create();
-
-    @State
     ArrayList<Question> mQuestionsArrayList;
 
     @State
     boolean mIsLoading;
-
     private QuestionsAdapter mQuestionsAdapter;
 
     private RecyclerViewClickListener mItemClickListener;
-
-    @Bind(R.id.progress)
-    ProgressBar mProgressBar;
 
     @Nullable
     @Override
@@ -106,8 +109,8 @@ public class QuestionsFragment extends BaseFragment<QuestionsComponent, Question
 
         mLoadingSubject.subscribe(loading -> {
             mIsLoading = loading;
-            mProgressBar.setVisibility(mIsLoading ? View.VISIBLE : View.GONE);
-            mQuestionsList.setVisibility(mIsLoading ? View.GONE : View.VISIBLE);
+            mRefreshLayout.post(() -> mRefreshLayout.setRefreshing(mIsLoading));
+//            mQuestionsList.setVisibility(mIsLoading ? View.GONE : View.VISIBLE);
         });
 
         mDataSubject.subscribe(questions -> {
@@ -119,14 +122,18 @@ public class QuestionsFragment extends BaseFragment<QuestionsComponent, Question
 
         mDataSubject.onNext(mQuestionsArrayList);
 
-        if (savedInstanceState == null) {
+//        if (savedInstanceState == null) {
             // do things on a new instance of presenter
 //            mPresenter.bindView(this);
             mPresenter.loadQuestions();
-        }
+//        }
     }
 
     private void setupQuestionsListLayout() {
+        mRefreshLayout.setOnRefreshListener(() -> {
+            mPresenter.loadQuestions(true);
+        });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);
@@ -152,7 +159,7 @@ public class QuestionsFragment extends BaseFragment<QuestionsComponent, Question
     @Override
     public void onQuestionClicked(int position) {
         // start vote activity/fragment
-        ((MainActivity) getActivity()).showVoteFragment(mQuestionsArrayList.get(position));
+        ((QuestionsActivity) getActivity()).showVoteFragment(mQuestionsArrayList.get(position).id);
     }
 
     @Override
@@ -171,6 +178,18 @@ public class QuestionsFragment extends BaseFragment<QuestionsComponent, Question
     }
 
     public static QuestionsFragment newInstance() {
-        return new QuestionsFragment();
+        QuestionsFragment fragment = new QuestionsFragment();
+//        fragment.setAllowEnterTransitionOverlap(true);
+//        fragment.setAllowReturnTransitionOverlap(true);
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            TransitionSet set = new TransitionSet();
+            set.addTransition(new Slide(Gravity.BOTTOM));
+            set.addTransition(new Fade(Fade.IN));
+
+            fragment.setEnterTransition(set);
+            fragment.setReenterTransition(set);
+            fragment.setExitTransition(new Fade(Fade.OUT));
+        }
+        return fragment;
     }
 }

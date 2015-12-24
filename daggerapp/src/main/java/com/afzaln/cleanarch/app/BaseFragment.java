@@ -2,7 +2,6 @@ package com.afzaln.cleanarch.app;
 
 import android.support.v7.widget.Toolbar;
 
-import com.afzaln.cleanarch.MainActivity;
 import nz.bradcampbell.compartment.HasPresenter;
 import nz.bradcampbell.compartment.Presenter;
 import nz.bradcampbell.compartment.PresenterControllerFragment;
@@ -14,7 +13,7 @@ public abstract class BaseFragment<C extends HasPresenter<P>, P extends Presente
 
     protected Toolbar getToolbar() {
         if (getActivity() != null) {
-            return ((MainActivity) getActivity()).mToolbar;
+            return ((BaseActivity) getActivity()).mToolbar;
         }
 
         return null;
@@ -22,7 +21,7 @@ public abstract class BaseFragment<C extends HasPresenter<P>, P extends Presente
 
     protected void toggleToolbarProgress(boolean show) {
         if (getActivity() != null) {
-            ((MainActivity) getActivity()).toggleToolbarProgress(show);
+            ((BaseActivity) getActivity()).toggleToolbarProgress(show);
         }
     }
 }

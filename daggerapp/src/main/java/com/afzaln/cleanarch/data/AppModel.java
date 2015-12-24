@@ -21,9 +21,13 @@ public class AppModel {
         mDatabaseHelper = databaseHelper;
     }
 
-    public Observable<List<Question>> getQuestions() {
-        return Observable.concat(getLocalQuestions(), getNetworkQuestions())
-                .first(questions -> !questions.isEmpty());
+    public Observable<List<Question>> getQuestions(boolean forceNetworkRefresh) {
+        if (forceNetworkRefresh) {
+            return getNetworkQuestions();
+        } else {
+            return Observable.concat(getLocalQuestions(), getNetworkQuestions())
+                    .first(questions -> !questions.isEmpty());
+        }
     }
 
     public Observable<List<Question>> getLocalQuestions() {
@@ -58,7 +62,7 @@ public class AppModel {
     public Observable<Choice> submitVote(int questionId, int choiceId) {
         return mApiaryService.postQuestionResponse(questionId, choiceId)
                 .subscribeOn(Schedulers.io())
-                .doOnNext(choice -> mDatabaseHelper.saveChoice(choice))
+                .doOnNext(choice -> mDatabaseHelper.updateChoice(choice))
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

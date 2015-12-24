@@ -92,7 +92,7 @@ public class VotePresenter extends BasePresenter<VoteView> {
         @Override
         public void onError(Throwable e) {
             if (getView() != null) {
-//                getView().hideVoteLoading();
+                getView().hideVoteLoading();
                 getView().showVoteError();
             }
         }

@@ -14,6 +14,5 @@ import dagger.Component;
 )
 @Singleton
 public interface DataComponent {
-    ApiaryService getApiaryService();
     AppModel getAppModel();
 }

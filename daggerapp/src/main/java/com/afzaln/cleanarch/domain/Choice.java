@@ -1,7 +1,5 @@
 package com.afzaln.cleanarch.domain;
 
-import java.io.Serializable;
-
 import com.afzaln.cleanarch.data.QuestionDatabase;
 import com.bluelinelabs.logansquare.annotation.JsonIgnore;
 import com.bluelinelabs.logansquare.annotation.JsonObject;
@@ -20,7 +18,7 @@ import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
  */
 @Table(database = QuestionDatabase.class)
 @JsonObject(fieldDetectionPolicy = FieldDetectionPolicy.NONPRIVATE_FIELDS)
-public class Choice extends BaseModel implements Serializable {
+public class Choice extends BaseModel {
 
     @PrimaryKey
     public int id = -1;
@@ -34,7 +32,7 @@ public class Choice extends BaseModel implements Serializable {
 
     @JsonIgnore
     @ForeignKey(saveForeignKeyModel = false)
-    ForeignKeyContainer<Question> mQuestionForeignKeyContainer;
+    public ForeignKeyContainer<Question> mQuestionForeignKeyContainer;
 
     public void associateQuestion(Question question) {
         mQuestionForeignKeyContainer = FlowManager.getContainerAdapter(Question.class).toForeignKeyContainer(question);

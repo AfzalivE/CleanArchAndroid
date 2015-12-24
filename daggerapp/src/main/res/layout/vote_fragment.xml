@@ -14,12 +14,18 @@
         android:layout_width="120dp"
         android:layout_height="120dp" />
 
-    <RadioGroup
-        android:id="@+id/choice_group"
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </RadioGroup>
+        <RadioGroup
+            android:id="@+id/choice_group"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </RadioGroup>
+
+    </ScrollView>
 
 </LinearLayout>
